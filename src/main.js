@@ -1,4 +1,4 @@
-import { statement } from './chapter01/function/statement.js';
+import { statement } from './chapter01/function/statement.jsx';
 import invoices from './chapter01/data/invoices.json';
 import plays from './chapter01/data/plays.json';
 
@@ -9,5 +9,5 @@ const result = statement(invoice, plays);
 // 또는 HTML에 표시하려면
 const app = document.getElementById('app');
 if (app) {
-    app.innerHTML = `<pre style="font-size:25px;">${result}</pre>`;
+    app.innerHTML = `<pre style="font-size:15px;">${result}</pre>`;
 }

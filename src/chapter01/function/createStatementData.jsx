@@ -1,10 +1,10 @@
-export function statement(invoice, plays) {
-    const statementData = {};
-    statementData.customer = invoice.customer;
-    statementData.performances = invoice.performances.map(enrichPerformance);
-    statementData.totalAmout = totalAmount(statementData);
-    statementData.volumeCredits = totalVolumeCredits(statementData);
-    return renderPlainText(statementData, plays);
+export function createStatementData(invoice, plays){
+    const result = {};
+    result.customer = invoice.customer;
+    result.performances = invoice.performances.map(enrichPerformance);
+    result.totalAmout = totalAmount(result);
+    result.volumeCredits = totalVolumeCredits(result);
+    return result;
 
     function enrichPerformance(aPerformance){
         const result =  Object.assign({}, aPerformance);
@@ -51,37 +51,15 @@ export function statement(invoice, plays) {
         return result;
     }
 
-    function totalVolumeCredits(){
-        let result = 0;
-        for (let perf of statementData.performances){
-            result += perf.volumeCredits;
-        }
-        return result;
+    function totalVolumeCredits(data){
+        return data.performances
+            .reduce((total,p) => total + p.volumeCredits, 0)
     }
 
-    function totalAmount(){
-        let result = 0;
-        for (let perf of statementData.performances){
-            result += perf.amount;
-        }
-        return result;
-    }
-}
+    function totalAmount(data){
+        return data.performances
+            .reduce((total,p) => total + p.amount, 0)
 
-function renderPlainText(data){
-    let result = `청구 내역 (고객명: ${data.customer})\n`
-    for(let perf of data.performances){
-        // 청구 내역을 출력한다.
-        result += `${perf.play.name}: ${usd(perf.amount)} (${perf.audience}석)\n`;
-    }
-    result += `총액: ${usd(data.totalAmout)}\n`;
-    result += `적립 포인트: ${data.volumeCredits}점\n`;
-    return result
-
-    function usd(aNumber) {
-        return new Intl.NumberFormat(
-            'en-US',
-            { style: 'currency', currency: 'USD', minimumFractionDigits:2 }).format(aNumber/100);
     }
 }
 
