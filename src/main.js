@@ -9,5 +9,5 @@ const result = statement(invoice, plays);
 // 또는 HTML에 표시하려면
 const app = document.getElementById('app');
 if (app) {
-    app.innerHTML = `<pre style="font-size:15px;">${result}</pre>`;
+    app.innerHTML = `<pre">${result}</pre>`;
 }
